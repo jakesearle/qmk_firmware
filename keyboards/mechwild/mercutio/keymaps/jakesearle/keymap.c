@@ -19,12 +19,17 @@
   [X] Just make the layers match the stupid thing again
   [X] tap-slash on rshift
   [X] comma/semicolon and period colon
+  [ ] Reorder functions with declarations
   [ ] more cool rotary press stuff
   [ ] more cool rotary rotation stuff
   [ ] more cool oled stuff
 */
 
 #include QMK_KEYBOARD_H
+
+bool type_password(keyrecord_t *record);
+bool handle_rotary_encoder_press(keyrecord_t *record, uint8_t mod_state);
+bool process_record_user(uint16_t keycode, keyrecord_t *record);
 
 /*
  *  _                            _
@@ -53,21 +58,25 @@ enum layer_names {
 #define SFT_SLA SFT_T(KC_SLSH)
 
 /* Shortcuts */
-#define HOME    G(KC_LEFT)
-#define END     G(KC_RGHT)
-#define WORD_L  A(KC_LEFT)
-#define WORD_R  A(KC_RGHT)
-#define SS      G(S(KC_4))
-#define SS_CLIP C(G(S(KC_4)))
-#define TAB_L   G(S(KC_LBRC))
-#define TAB_R   G(S(KC_RBRC))
-#define DESK_L  C(KC_LEFT)
-#define DESK_R  C(KC_RGHT)
-#define SEARCH  G(KC_SPC)
-#define EMOJI   C(G(KC_SPC))
-#define MISSION C(KC_UP)
-#define STEP_VU A(S(KC_VOLU))
-#define STEP_VD A(S(KC_VOLD))
+#define HOME    G(KC_LEFT)    // Navigate line begin
+#define END     G(KC_RGHT)    // Navigate line end
+#define WORD_L  A(KC_LEFT)    // Navigate word left
+#define WORD_R  A(KC_RGHT)    // Navigate word right
+#define SS      G(S(KC_4))    // Screenshot
+#define SS_CLIP C(G(S(KC_4))) // Screenshot (save to clipboard)
+#define TAB_L   G(S(KC_LBRC)) // Navigate tab left
+#define TAB_R   G(S(KC_RBRC)) // Navigate tab right
+#define DESK_L  C(KC_LEFT)    // Navigate desktop left
+#define DESK_R  C(KC_RGHT)    // Navigate desktop right
+#define SEARCH  G(KC_SPC)     // Spotlight search
+#define EMOJI   C(G(KC_SPC))  // Emoji menu
+#define MISSION C(KC_UP)      // Mission control
+#define STEP_VU A(S(KC_VOLU)) // Granular volume up
+#define STEP_VD A(S(KC_VOLD)) // Granular volume down
+#define T_MUTE  G(S(KC_M))    // Teams mute
+#define BITWRDN G(S(KC_L))    // Fill password (Bitwarden browser shortcut)
+#define UNDO    G(KC_Z)
+#define REDO    G(S(KC_Z))
 
 /* Custom keycodes */
 enum custom_keycodes {
@@ -102,7 +111,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_SYM] = LAYOUT_all(
                                                                                                                   _______,
       _______,          KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_BSLS, KC_PIPE, _______,
-      _______,          KC_PLUS, KC_EQL,  KC_MINS, KC_UNDS, KC_GRV,  KC_TILD, XXXXXXX, KC_QUOT, KC_DQUO, XXXXXXX, _______,
+      _______,          KC_PLUS, KC_EQL,  KC_MINS, KC_UNDS, KC_GRV,  KC_TILD, KC_DQUO, KC_QUOT, XXXXXXX, XXXXXXX, _______,
       _______, XXXXXXX, XXXXXXX, KC_LBRC, KC_LCBR, KC_LPRN, KC_LT,   KC_GT,   KC_RPRN, KC_RCBR, KC_RBRC,          KC_SLSH,
       _______, _______, _______,          _______, _______,          _______,          _______, _______,          _______),
 
@@ -116,7 +125,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_FN] = LAYOUT_all(
                                                                                                                   _______,
       QK_BOOT,          KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_DEL,
-      _______,          KC_F11,  KC_F12,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
+      _______,          KC_F11,  KC_F12,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, BITWRDN, XXXXXXX, _______,
       _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_LALT,          _______,
       _______, _______, _______,          _______, _______,          _______,          _______, _______,          _______)
 };
@@ -143,41 +152,16 @@ bool type_password(keyrecord_t *record) {
         // I know this is for real a bad idea, but whatever
         SEND_STRING("super_secret_password");
     }
-    return true;
-}
-
-bool handle_rotary_encode_press(keyrecord_t *record, uint8_t mod_state) {
-    // If shifted
-    if (IS_LAYER_ON(_FN) && record->event.pressed) {
-        // return type_password(record);
-        if (record->event.pressed) {
-            tap_code16(FS_PASS);
-        }
-    } else if (IS_LAYER_ON(_NAV) && record->event.pressed) {
-        tap_code16(G(KC_W));
-    } else if (mod_state & MOD_MASK_SHIFT) {
-        if (record->event.pressed) {
-            // Cancel the shift
-            del_mods(MOD_MASK_SHIFT);
-            tap_code16(SEARCH);
-            // Re-enable the shift
-            set_mods(mod_state);
-        }
-        return false;
-    } else {
-        // No mods
-        if (record->event.pressed) {
-            tap_code(KC_MPLY);
-        }
-    }
-    return true;
+    return false;
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     uint8_t mod_state = get_mods();
     switch (keycode) {
         case FS_PASS: {
-            return type_password(record);
+            if (record->event.pressed) {
+                return type_password(record);
+            }
         }
         case KC_COMM: {
             if (mod_state & MOD_MASK_SHIFT) {
@@ -188,7 +172,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 }
                 return false;
             }
-            return true;
         }
         case KC_DOT: {
             if (mod_state & MOD_MASK_SHIFT) {
@@ -198,10 +181,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 }
                 return false;
             }
-            return true;
         }
         case R_PRESS: {
-            return handle_rotary_encode_press(record, mod_state);
+            return handle_rotary_encoder_press(record, mod_state);
         }
     }
     return true;
@@ -216,31 +198,110 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
  *                          |___/
  */
 
-/* Rules:
- *
- *
- */
+bool handle_rotary_encoder_press(keyrecord_t *record, uint8_t mod_state) {
+    if (mod_state & MOD_MASK_SHIFT) {
+        // SHIFT
+        if (record->event.pressed) {
+            del_mods(MOD_MASK_CTRL);
+            tap_code16(T_MUTE);
+            set_mods(mod_state);
+            return false;
+        }
+    } else if (mod_state & MOD_MASK_GUI) {
+        // GUI
+        if (record->event.pressed) {
+            tap_code(KC_ENT);
+            del_mods(MOD_MASK_GUI);
+            return false;
+        }
+    } else if (mod_state & MOD_MASK_ALT) {
+        // ALT
+    } else if (mod_state & MOD_MASK_CTRL) {
+        // CTRL
+        if (record->event.pressed) {
+            tap_code(KC_UP);
+        }
+    } else if (IS_LAYER_ON(_NAV) && record->event.pressed) {
+        // _NAV
+        tap_code16(G(KC_W));
+    } else if (IS_LAYER_ON(_SYM) && record->event.pressed) {
+        // _SYM
+    } else if (IS_LAYER_ON(_NUM) && record->event.pressed) {
+        // _NUM
+    } else if (IS_LAYER_ON(_FN) && record->event.pressed) {
+        // _FN
+        if (record->event.pressed) {
+            tap_code16(FS_PASS);
+        }
+    } else {
+        // Default
+        if (record->event.pressed) {
+            tap_code(KC_MPLY);
+        }
+    }
+    return true;
+}
 
 #ifdef ENCODER_ENABLE
 bool encoder_update_user(uint8_t index, bool clockwise) {
-    // TODO: GUI = cmd+tab
-    // Shift / nav layer = GS[/]
+    uint8_t mod_state = get_mods();
     switch (index) {
         // Use first (and only) encoder
         case 0:
-            // uint8_t mod_state = get_mods();
-            if (IS_LAYER_ON(_NAV)) {
-                // Nav layer: Tab switching
-                if (clockwise)
+            if (mod_state & MOD_MASK_SHIFT) {
+                // SHIFT
+                if (clockwise) {
+                    tap_code(KC_TAB);
+                } else {
+                    tap_code16(S(KC_TAB));
+                }
+            } else if (mod_state & MOD_MASK_GUI) {
+                // GUI
+                // set_mods(MOD_MASK_GUI);
+                if (clockwise) {
+                    tap_code(KC_TAB);
+                } else {
+                    tap_code16(S(KC_TAB));
+                }
+            } else if (mod_state & MOD_MASK_ALT) {
+                // ALT
+                if (clockwise) {
+                    tap_code(KC_RIGHT);
+                } else {
+                    tap_code(KC_LEFT);
+                }
+            } else if (mod_state & MOD_MASK_CTRL) {
+                // CTRL
+                if (clockwise) {
+                    tap_code(KC_RIGHT);
+                } else {
+                    tap_code(KC_LEFT);
+                }
+            } else if (IS_LAYER_ON(_NAV)) {
+                // _NAV
+                if (clockwise) {
                     tap_code16(TAB_R);
-                else
+                } else {
                     tap_code16(TAB_L);
+                }
+            } else if (IS_LAYER_ON(_SYM)) {
+                // _SYM
+            } else if (IS_LAYER_ON(_NUM)) {
+                // _NUM
+            } else if (IS_LAYER_ON(_FN)) {
+                // _FN
+                if (clockwise) {
+                    tap_code16(BITWRDN);
+                } else {
+                    // Nothing
+                }
             } else {
                 // Default: volume control
-                if (clockwise)
+                if (clockwise) {
                     tap_code16(STEP_VU);
-                else
+                } else {
                     tap_code16(STEP_VD);
+                }
             }
             break;
     }
