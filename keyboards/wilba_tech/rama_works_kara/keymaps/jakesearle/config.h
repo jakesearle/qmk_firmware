@@ -1,0 +1,1 @@
+#define RGB_BACKLIGHT_ENABLED 1
