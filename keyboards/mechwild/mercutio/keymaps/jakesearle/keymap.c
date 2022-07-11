@@ -151,8 +151,9 @@ bool type_password(keyrecord_t *record) {
     if (record->event.pressed) {
         // I know this is for real a bad idea, but whatever
         SEND_STRING("super_secret_password");
+        return false;
     }
-    return false;
+    return true;
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -162,6 +163,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) {
                 return type_password(record);
             }
+            return true;
         }
         case KC_COMM: {
             if (mod_state & MOD_MASK_SHIFT) {
@@ -172,6 +174,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 }
                 return false;
             }
+            return true;
         }
         case KC_DOT: {
             if (mod_state & MOD_MASK_SHIFT) {
@@ -181,6 +184,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 }
                 return false;
             }
+            return true;
         }
         case R_PRESS: {
             return handle_rotary_encoder_press(record, mod_state);
@@ -207,6 +211,7 @@ bool handle_rotary_encoder_press(keyrecord_t *record, uint8_t mod_state) {
             set_mods(mod_state);
             return false;
         }
+        return true;
     } else if (mod_state & MOD_MASK_GUI) {
         // GUI
         if (record->event.pressed) {
@@ -214,30 +219,37 @@ bool handle_rotary_encoder_press(keyrecord_t *record, uint8_t mod_state) {
             del_mods(MOD_MASK_GUI);
             return false;
         }
+        return true;
     } else if (mod_state & MOD_MASK_ALT) {
         // ALT
     } else if (mod_state & MOD_MASK_CTRL) {
         // CTRL
         if (record->event.pressed) {
             tap_code(KC_UP);
+            return false;
         }
+        return true;
     } else if (IS_LAYER_ON(_NAV) && record->event.pressed) {
         // _NAV
-        tap_code16(G(KC_W));
+        if (record->event.pressed) {
+            tap_code16(G(KC_W));
+            return false;
+        }
+        return true;
     } else if (IS_LAYER_ON(_SYM) && record->event.pressed) {
         // _SYM
     } else if (IS_LAYER_ON(_NUM) && record->event.pressed) {
         // _NUM
     } else if (IS_LAYER_ON(_FN) && record->event.pressed) {
         // _FN
-        if (record->event.pressed) {
-            tap_code16(FS_PASS);
-        }
+        return type_password(record);
     } else {
         // Default
         if (record->event.pressed) {
             tap_code(KC_MPLY);
+            return false;
         }
+        return true;
     }
     return true;
 }
