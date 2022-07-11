@@ -27,7 +27,7 @@
 
 #include QMK_KEYBOARD_H
 
-bool type_password(keyrecord_t *record);
+void type_password(keyrecord_t *record);
 bool handle_rotary_encoder_press(keyrecord_t *record, uint8_t mod_state);
 bool process_record_user(uint16_t keycode, keyrecord_t *record);
 
@@ -147,25 +147,22 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                              |___/
  */
 
-bool type_password(keyrecord_t *record) {
-    if (record->event.pressed) {
-        // I know this is for real a bad idea, but whatever
-        SEND_STRING("super_secret_password");
-        return false;
-    }
-    return true;
+void type_password(keyrecord_t *record) {
+    // I know this is for real a bad idea, but whatever
+    SEND_STRING("super_secret_password");
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     uint8_t mod_state = get_mods();
     switch (keycode) {
-        case FS_PASS: {
+        case FS_PASS:
             if (record->event.pressed) {
-                return type_password(record);
+                type_password(record);
+                return false;
             }
-            return true;
-        }
-        case KC_COMM: {
+            break;
+
+        case KC_COMM:
             if (mod_state & MOD_MASK_SHIFT) {
                 if (record->event.pressed) {
                     del_mods(MOD_MASK_SHIFT);
@@ -174,9 +171,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 }
                 return false;
             }
-            return true;
-        }
-        case KC_DOT: {
+            break;
+
+        case KC_DOT:
             if (mod_state & MOD_MASK_SHIFT) {
                 if (record->event.pressed) {
                     // Sends a ':' since it's already shifted
@@ -184,11 +181,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 }
                 return false;
             }
-            return true;
-        }
-        case R_PRESS: {
+            break;
+
+        case R_PRESS:
             return handle_rotary_encoder_press(record, mod_state);
-        }
     }
     return true;
 };
@@ -211,7 +207,6 @@ bool handle_rotary_encoder_press(keyrecord_t *record, uint8_t mod_state) {
             set_mods(mod_state);
             return false;
         }
-        return true;
     } else if (mod_state & MOD_MASK_GUI) {
         // GUI
         if (record->event.pressed) {
@@ -219,7 +214,6 @@ bool handle_rotary_encoder_press(keyrecord_t *record, uint8_t mod_state) {
             del_mods(MOD_MASK_GUI);
             return false;
         }
-        return true;
     } else if (mod_state & MOD_MASK_ALT) {
         // ALT
     } else if (mod_state & MOD_MASK_CTRL) {
@@ -228,28 +222,26 @@ bool handle_rotary_encoder_press(keyrecord_t *record, uint8_t mod_state) {
             tap_code(KC_UP);
             return false;
         }
-        return true;
     } else if (IS_LAYER_ON(_NAV) && record->event.pressed) {
         // _NAV
         if (record->event.pressed) {
             tap_code16(G(KC_W));
             return false;
         }
-        return true;
     } else if (IS_LAYER_ON(_SYM) && record->event.pressed) {
         // _SYM
     } else if (IS_LAYER_ON(_NUM) && record->event.pressed) {
         // _NUM
     } else if (IS_LAYER_ON(_FN) && record->event.pressed) {
         // _FN
-        return type_password(record);
+        type_password(record);
+        return false;
     } else {
         // Default
         if (record->event.pressed) {
             tap_code(KC_MPLY);
             return false;
         }
-        return true;
     }
     return true;
 }
