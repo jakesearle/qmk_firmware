@@ -1,1 +1,1 @@
-qmk flash --keyboard reviung41 --keymap jakesearle2
+qmk flash --keyboard reviung41 --keymap jakesearle

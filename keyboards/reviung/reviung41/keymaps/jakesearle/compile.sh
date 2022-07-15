@@ -1,1 +1,1 @@
-qmk compile --keyboard reviung41 --keymap jakesearle2
+qmk compile --keyboard reviung41 --keymap jakesearle

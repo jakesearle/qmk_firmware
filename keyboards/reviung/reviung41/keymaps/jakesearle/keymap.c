@@ -13,8 +13,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Compile: $qmk compile --keyboard reviung41 --keymap jakesearle2
- * Flash: $qmk flash --keyboard reviung41 --keymap jakesearle2
+ * Compile: $qmk compile --keyboard reviung41 --keymap jakesearle
+ * Flash: $qmk flash --keyboard reviung41 --keymap jakesearle
  */
 
 #include QMK_KEYBOARD_H
@@ -47,7 +47,7 @@ enum layer_names {
 #define S_ENTR  KC_SFTENT
 #define HOME    G(KC_LEFT)
 #define END     G(KC_RGHT)
-#define WORD_L  A(KC_LEFT)
+#define WORD_L  A(KC_LEFT).0
 #define WORD_R  A(KC_RGHT)
 #define SS_FULL G(S(KC_3))
 #define SS      G(S(KC_4))
@@ -69,7 +69,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case FS_PASS:
         if (record->event.pressed) {
             // I know this is for real a bad idea, but whatever
-            SEND_STRING("52FV4xCBJLH6XFgHbygP");
+            SEND_STRING("super_secret_password");
         }
         break;
     }
