@@ -15,6 +15,13 @@
  *
  * Compile: $qmk compile --keyboard reviung41 --keymap jakesearle
  * Flash: $qmk flash --keyboard reviung41 --keymap jakesearle
+ * TODO:: Add more symbols to the number layer
+ * TODO:: Some parity between number layer symbols and symbol layer??
+ * TODO:: Move homerow mods to ZXCV?
+ * TODO:: RGB off by default when flashing the board
+ * TODO:: Take inspiration from Mercutio layout?
+ *  - TODO:: Implement similar cmd+tab macros
+ * TODO:: Gaming layer
  */
 
 #include QMK_KEYBOARD_H
