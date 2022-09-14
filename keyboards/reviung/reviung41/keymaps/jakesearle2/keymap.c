@@ -50,15 +50,15 @@ enum layer_names {
 #define OPT_L   OPT_T(KC_L)
 #define CTL_SC  CTL_T(KC_SCLN)
 
-/* Norman Homerow Mods */
-// #define CTL_A   CTL_T(KC_A)
-// #define OPT_S   OPT_T(KC_S)
-#define CMD_E   CMD_T(KC_E)
-#define S_T   SFT_T(KC_T)
-#define SFT_N   SFT_T(KC_N)
-#define CMD_I   CMD_T(KC_I)
-#define OPT_O   OPT_T(KC_O)
-#define CTL_H   CTL_T(KC_H)
+/* Norman Homerow (Bottom-row) Mods */
+#define CTL_Z   CTL_T(KC_Z)
+#define OPT_X   OPT_T(KC_X)
+#define CMD_C   CMD_T(KC_C)
+#define SFT_V   SFT_T(KC_V)
+#define SFT_M   SFT_T(KC_M)
+#define CMD_COM CMD_T(KC_COMM)
+#define OPT_DOT OPT_T(KC_DOT)
+#define CTL_SL  CTL_T(KC_SLSH)
 
 /* Shortcuts */
 #define S_ENTR  KC_SFTENT
@@ -102,8 +102,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                             NUM,     NAV,     KC_SPC,  SYM,     FN),
     [_NORMAN] = LAYOUT_reviung41(
         KC_TAB,  KC_Q,    KC_W,    KC_D,    KC_F,    KC_K,             KC_J,    KC_U,    KC_R,    KC_L,    KC_SCLN, KC_BSPC,
-        KC_ESC,  CTL_A,   OPT_S,   CMD_E,   S_T,     KC_G,             KC_Y,    SFT_N,   CMD_I,   OPT_O,   CTL_H,   KC_QUOT,
-        KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,             KC_P,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, S_ENTR,
+        KC_ESC,  KC_A,    KC_S,    KC_E,    KC_T,    KC_G,             KC_Y,    KC_N,    KC_I,    KC_O,    KC_H,    KC_QUOT,
+        KC_LSFT, CTL_Z,   OPT_X,   CMD_C,   SFT_V,   KC_B,             KC_P,    SFT_M,   CMD_COM, OPT_DOT, CTL_SL,  S_ENTR,
                                             NUM,     NAV,     KC_SPC,  SYM,     FN),
     [_NUM] = LAYOUT_reviung41(
         _______, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,             KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    _______,
