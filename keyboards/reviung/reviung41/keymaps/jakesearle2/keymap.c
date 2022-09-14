@@ -21,21 +21,24 @@
 
 enum layer_names {
     _QWERTY,
+    _NORMAN,
     _NUM,
     _NAV,
     _SYM,
     _FN,
+    _ADJ
 };
 
 /* Default layers */
-#define QWERTY DF(_)
-#define COLEMAK M(_COLEMAK)
+#define QWERTY  DF(_QWERTY)
+#define NORMAN  DF(_NORMAN)
 
 /* Layers */
 #define SYM     MO(_SYM)
 #define NUM     MO(_NUM)
 #define NAV     MO(_NAV)
 #define FN      MO(_FN)
+#define ADJ     MO(_ADJ)
 
 /* QWERTY Homerow Mods */
 #define CTL_A   CTL_T(KC_A)
@@ -46,6 +49,16 @@ enum layer_names {
 #define CMD_K   CMD_T(KC_K)
 #define OPT_L   OPT_T(KC_L)
 #define CTL_SC  CTL_T(KC_SCLN)
+
+/* Norman Homerow Mods */
+// #define CTL_A   CTL_T(KC_A)
+// #define OPT_S   OPT_T(KC_S)
+#define CMD_E   CMD_T(KC_E)
+#define S_T   SFT_T(KC_T)
+#define SFT_N   SFT_T(KC_N)
+#define CMD_I   CMD_T(KC_I)
+#define OPT_O   OPT_T(KC_O)
+#define CTL_H   CTL_T(KC_H)
 
 /* Shortcuts */
 #define S_ENTR  KC_SFTENT
@@ -87,6 +100,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_ESC,  CTL_A,   OPT_S,   CMD_D,   SFT_F,   KC_G,             KC_H,    SFT_J,   CMD_K,   OPT_L,   CTL_SC,  KC_QUOT,
         KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,             KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, S_ENTR,
                                             NUM,     NAV,     KC_SPC,  SYM,     FN),
+    [_NORMAN] = LAYOUT_reviung41(
+        KC_TAB,  KC_Q,    KC_W,    KC_D,    KC_F,    KC_K,             KC_J,    KC_U,    KC_R,    KC_L,    KC_SCLN, KC_BSPC,
+        KC_ESC,  CTL_A,   OPT_S,   CMD_E,   S_T,     KC_G,             KC_Y,    SFT_N,   CMD_I,   OPT_O,   CTL_H,   KC_QUOT,
+        KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,             KC_P,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, S_ENTR,
+                                            NUM,     NAV,     KC_SPC,  SYM,     FN),
     [_NUM] = LAYOUT_reviung41(
         _______, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,             KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    _______,
         _______, KC_LCTL, KC_LOPT, KC_LCMD, KC_LSFT, XXXXXXX,          KC_PLUS, KC_4,    KC_5,    KC_6,    KC_MINS, _______,
@@ -96,17 +114,22 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, DESK_L,  DESK_R,  TAB_L,   TAB_R,   KC_VOLU,          HOME,    WORD_L,  WORD_R,  END,     KC_PGUP, _______,
         _______, KC_LCTL, KC_LOPT, KC_LCMD, KC_LSFT, KC_VOLD,          KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, KC_PGDN, _______,
         KC_CAPS, SS_CLIP, SS,      KC_MPRV, KC_MNXT, KC_MPLY,          XXXXXXX, MISSION, XXXXXXX, EMOJI,   SEARCH,  _______,
-                                            NUM,     _______, KC_SPC,  SYM,     FN),
+                                            NUM,     _______, KC_SPC,  ADJ,     FN),
     [_SYM] = LAYOUT_reviung41(
         _______, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,          KC_CIRC, KC_AMPR, KC_ASTR, KC_BSLS, KC_PIPE, _______,
         _______, KC_PLUS, KC_EQL,  KC_MINS, KC_UNDS, XXXXXXX,          XXXXXXX, KC_LSFT, KC_LCMD, KC_LOPT, KC_LCTL, _______,
         _______, KC_GRV,  KC_LBRC, KC_LCBR, KC_LPRN, KC_LT,            KC_GT,   KC_RPRN, KC_RCBR, KC_RBRC, KC_TILD, _______,
-                                            NUM,     NAV,     KC_SPC,  _______, FN),
+                                            NUM,     ADJ,     KC_SPC,  _______, FN),
     [_FN] = LAYOUT_reviung41(
         _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,            KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_DEL,
         _______, KC_F11,  KC_F12,  XXXXXXX, FS_PASS, XXXXXXX,          XXXXXXX, KC_LSFT, KC_LCMD, KC_LOPT, KC_LCTL, _______,
         _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, RGB_TOG,          XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
-                                            NUM,     NAV,     KC_SPC,  SYM,     _______)
+                                            NUM,     NAV,     KC_SPC,  SYM,     _______),
+    [_ADJ] = LAYOUT_reviung41(
+        _______, QWERTY,  _______, _______, RESET,   _______,          _______, _______, _______, _______, _______, _______,
+        _______, _______, _______, _______, _______, _______,          _______, _______, _______, _______, _______, _______,
+        _______, _______, _______, _______, _______, _______,          NORMAN,  _______, _______, _______, _______, _______,
+                                            _______, _______, _______, _______, _______)
 
 };
 
