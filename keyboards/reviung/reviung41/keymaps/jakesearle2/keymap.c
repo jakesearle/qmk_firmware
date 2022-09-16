@@ -15,29 +15,39 @@
  *
  * Compile: $qmk compile --keyboard reviung41 --keymap jakesearle2
  * Flash: $qmk flash --keyboard reviung41 --keymap jakesearle2
+ *
+ * TODO::
+ * - Create a NUM lock under the shift key (TO doesn't work idk)
+ * - Move away from spacebar?
+ * - Use a 34 key layout and have the extra keys be macros?
  */
 
 #include QMK_KEYBOARD_H
 
 enum layer_names {
+    /* Main Layers */
     _QWERTY,
     _NORMAN,
+    /* Secondary Layers */
     _NUM,
     _NAV,
     _SYM,
     _FN,
+    /* Tertiary Layers */
     _ADJ
 };
 
-/* Default layers */
+/* Main layers */
 #define QWERTY  DF(_QWERTY)
 #define NORMAN  DF(_NORMAN)
 
-/* Layers */
+/* Secondary Layers */
 #define SYM     MO(_SYM)
-#define NUM     MO(_NUM)
+#define NUM     TT(_NUM)
 #define NAV     MO(_NAV)
 #define FN      MO(_FN)
+
+/* Tertiary Layers */
 #define ADJ     MO(_ADJ)
 
 /* QWERTY Homerow Mods */
@@ -107,8 +117,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                             NUM,     NAV,     KC_SPC,  SYM,     FN),
     [_NUM] = LAYOUT_reviung41(
         _______, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,             KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    _______,
-        _______, KC_LCTL, KC_LOPT, KC_LCMD, KC_LSFT, XXXXXXX,          KC_PLUS, KC_4,    KC_5,    KC_6,    KC_MINS, _______,
-        _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          KC_ASTR, KC_1,    KC_2,    KC_3,    KC_SLSH, _______,
+        _______, KC_LCTL, KC_LOPT, KC_LCMD, KC_LSFT, XXXXXXX,          XXXXXXX, KC_4,    KC_5,    KC_6,    XXXXXXX, _______,
+        _______, KC_SLSH, KC_ASTR, KC_MINS, KC_PLUS, XXXXXXX,          XXXXXXX, KC_1,    KC_2,    KC_3,    XXXXXXX, _______,
                                             _______, NAV,     KC_SPC,  KC_0,    KC_DOT),
     [_NAV] = LAYOUT_reviung41(
         _______, DESK_L,  DESK_R,  TAB_L,   TAB_R,   KC_VOLU,          HOME,    WORD_L,  WORD_R,  END,     KC_PGUP, _______,
@@ -121,14 +131,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, KC_GRV,  KC_LBRC, KC_LCBR, KC_LPRN, KC_LT,            KC_GT,   KC_RPRN, KC_RCBR, KC_RBRC, KC_TILD, _______,
                                             NUM,     ADJ,     KC_SPC,  _______, FN),
     [_FN] = LAYOUT_reviung41(
-        _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,            KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_DEL,
-        _______, KC_F11,  KC_F12,  XXXXXXX, FS_PASS, XXXXXXX,          XXXXXXX, KC_LSFT, KC_LCMD, KC_LOPT, KC_LCTL, _______,
-        _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, RGB_TOG,          XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
+        _______, KC_F12,  KC_F7,   KC_F8,   KC_F9,   XXXXXXX,          XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_DEL,
+        _______, KC_F11,  KC_F4,   KC_F5,   KC_F6,   XXXXXXX,          XXXXXXX, KC_LSFT, KC_LCMD, KC_LOPT, KC_LCTL, _______,
+        _______, KC_F10,  KC_F1,   KC_F2,   KC_F3,   XXXXXXX,          XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
                                             NUM,     NAV,     KC_SPC,  SYM,     _______),
     [_ADJ] = LAYOUT_reviung41(
-        _______, QWERTY,  _______, _______, RESET,   _______,          _______, _______, _______, _______, _______, _______,
+        _______, QWERTY,  _______, _______, RESET,   _______,          _______, _______, _______, _______, FS_PASS, _______,
         _______, _______, _______, _______, _______, _______,          _______, _______, _______, _______, _______, _______,
-        _______, _______, _______, _______, _______, _______,          NORMAN,  _______, _______, _______, _______, _______,
+        _______, _______, _______, _______, _______, RGB_TOG,          NORMAN,  _______, _______, _______, _______, _______,
                                             _______, _______, _______, _______, _______)
 
 };
@@ -191,7 +201,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
  * If you're looking at the board from the back, this is roughly where the RGB
  * locations are, except for the middle LED, which is on the top of the board
     _______, _______,       8, _______,       9, _______,          _______,       0, _______,       1, _______, _______,
-          7, _______, _______, _______, _______, _______,   [10]   _______, _______, _______, _______, _______,        2,
+          7, _______, _______, _______, _______, _______,  [10]    _______, _______, _______, _______, _______,        2,
     _______, _______, _______,       6, _______, _______,          _______, _______,       3, _______, _______, _______,
                                         _______,       5, _______,       4, _______
 */
