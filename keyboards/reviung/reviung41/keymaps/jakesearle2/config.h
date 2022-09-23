@@ -7,5 +7,5 @@
 
 // Enable RGB Layer stuff
 #define RGBLIGHT_LAYERS
-#define RGBLIGHT_MAX_LAYERS 5
+#define RGBLIGHT_MAX_LAYERS 7
 #define RGBLIGHT_LAYERS_OVERRIDE_RGB_OFF
