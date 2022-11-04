@@ -90,6 +90,8 @@ enum layer_names {
 
 enum custom_keycodes {
     FS_PASS = SAFE_RANGE,
+    A_UMLAU,
+    O_UMLAU,
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t* record) {
@@ -101,6 +103,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
         SEND_STRING("password");
       }
       break;
+
+    case A_UMLAU:
+        if (record->event.pressed) {
+            SEND_STRING(SS_LALT("u"));
+            SEND_STRING("a");
+        }
+        break;
+
+    case O_UMLAU:
+        if (record->event.pressed) {
+            SEND_STRING(SS_LALT("u"));
+            SEND_STRING("o");
+        }
 
     case KC_COMM:
       if (mod_state & MOD_MASK_SHIFT) {
@@ -150,7 +165,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                         NUM,     _______, KC_SPC,  ADJ,     FN),
   [_SYM] = LAYOUT_reviung41(
     _______, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,          KC_CIRC, KC_AMPR, KC_ASTR, KC_BSLS, KC_PIPE, _______,
-    _______, KC_PLUS, KC_EQL,  KC_MINS, KC_UNDS, XXXXXXX,          XXXXXXX, KC_LSFT, KC_LCMD, KC_LOPT, KC_LCTL, _______,
+    _______, KC_PLUS, KC_EQL,  KC_MINS, KC_UNDS, A_UMLAU,          O_UMLAU, KC_LSFT, KC_LCMD, KC_LOPT, KC_LCTL, _______,
     _______, KC_GRV,  KC_LBRC, KC_LCBR, KC_LPRN, KC_LT,            KC_GT,   KC_RPRN, KC_RCBR, KC_RBRC, KC_TILD, _______,
                                         NUM,     ADJ,     KC_SPC,  _______, FN),
   [_FN] = LAYOUT_reviung41(
