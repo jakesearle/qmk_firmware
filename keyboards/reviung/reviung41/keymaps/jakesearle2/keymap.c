@@ -31,6 +31,7 @@ enum layer_names {
     /* Specialty Layers */
     _ANKI,
     _GAMING,
+    // _JSTICK,
     /* Secondary Layers */
     _NUM,
     _NAV,
@@ -40,6 +41,46 @@ enum layer_names {
     _ADJ
 };
 
+enum custom_keycodes {
+    FS_PASS = SAFE_RANGE,
+    A_UMLAU,
+    O_UMLAU,
+    GC_LSU,
+	GC_LSD,
+	GC_LSL,
+	GC_LSR,
+	GC_RSU,
+	GC_RSD,
+	GC_RSL,
+	GC_RSR,
+	GC_DPU,
+	GC_DPD,
+	GC_DPL,
+	GC_DPR,
+	GC_FB_W,
+	GC_FB_S,
+	GC_FB_E,
+	GC_FB_N,
+	GC_L1,
+	GC_L2,
+	GC_L3,
+	GC_R1,
+	GC_R2,
+	GC_R3,
+	GC_STA,
+	GC_SEL,
+	GC_HOME
+};
+
+// joystick_config_t joystick_axes[JOYSTICK_AXIS_COUNT] = {
+// 	JOYSTICK_AXIS_VIRTUAL,
+// 	JOYSTICK_AXIS_VIRTUAL,
+// 	JOYSTICK_AXIS_VIRTUAL,
+// 	JOYSTICK_AXIS_VIRTUAL,
+// 	JOYSTICK_AXIS_VIRTUAL,
+// 	JOYSTICK_AXIS_VIRTUAL,
+// };
+
 /*** Layers ***/
 /* Main layers */
 #define QWERTY DF(_QWERTY)
@@ -47,6 +88,7 @@ enum layer_names {
 /* Specialty Layers */
 #define ANKI   DF(_ANKI)
 #define GAMING DF(_GAMING)
+// #define JSTICK DF(_JSTICK)
 /* Secondary Layers */
 #define SYM    MO(_SYM)
 #define NUM    TT(_NUM)
@@ -92,12 +134,6 @@ enum layer_names {
 #define SEARCH G(KC_SPC)
 #define EMOJI C(G(KC_SPC))
 #define MISSION C(KC_UP)
-
-enum custom_keycodes {
-    FS_PASS = SAFE_RANGE,
-    A_UMLAU,
-    O_UMLAU,
-};
 
 bool process_record_user(uint16_t keycode, keyrecord_t* record) {
   uint8_t mod_state = get_mods();
@@ -168,6 +204,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_ESC,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,             KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_ENT,
     KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,             KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,
                                         NUM,     NAV,     KC_SPC,  SYM,     FN),
+//   [_JSTICK] = LAYOUT_reviung41(
+//     _______, GC_L3,   GC_R3,   GC_HOME, GC_STA,  GC_SEL,           _______, _______, _______, _______, _______, _______,
+//     _______, _______, GC_DPL,  GC_DPD,  GC_DPR,  _______,          _______, GC_FB_W, GC_FB_N, GC_L1,   GC_R1,   _______,
+//     _______, _______, _______, _______, _______, _______,          _______, GC_FB_S, GC_FB_E, GC_L2,   GC_R2,   _______,
+//                                         _______, GC_DPU,  _______, _______, _______),
   [_NUM] = LAYOUT_reviung41(
     _______, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,             KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    _______,
     _______, KC_LCTL, KC_LOPT, KC_LCMD, KC_LSFT, XXXXXXX,          XXXXXXX, KC_4,    KC_5,    KC_6,    XXXXXXX, _______,

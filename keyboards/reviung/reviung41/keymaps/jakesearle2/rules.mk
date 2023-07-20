@@ -4,3 +4,4 @@ EXTRAFLAGS += -flto
 BOOTLOADER = qmk-dfu
 
 UNICODE_ENABLE = yes
+# JOYSTICK_ENABLE = yes
